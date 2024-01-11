@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+// we can call jsx direct 
+// import {jsx as _jsx} from 'react/jsx-runtime.js'
 import App from './App.jsx'
 
 
