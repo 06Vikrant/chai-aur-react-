@@ -4,10 +4,6 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import App from './App.jsx'
 import Github, { githubInfoLoader } from './components/Github/Github.jsx'
 import { About, Contact, Home, User } from './components'
-// import About from './components/About/About.jsx'
-// import Contact from './components/Contact/Contact.jsx'
-// import Home from './components/Home/Home.jsx'
-// import User from './components/User/User.jsx'
 import './index.css'
 import Layout from './Layout.jsx'
 
