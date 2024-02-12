@@ -7,16 +7,9 @@ export default function App() {
 
   return (
     <div>
-      <Counter />
+      <Counter heading='chai aur react with Hitesh Sir'/>
     </div>
   )
 }
 
-// export default function App() {
-//   return (
-//     <div>
-//       <Counter />
-//     </div>
-//   )
-// }
 
