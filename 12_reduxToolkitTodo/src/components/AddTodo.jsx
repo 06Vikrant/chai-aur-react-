@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addTodo } from '../features/todo/todoSlice'
 
+// addTodo ke andar value bhejni h so we use dispatch 
 export default function AddTodo() {
 
     const [input, setInput] = useState('')

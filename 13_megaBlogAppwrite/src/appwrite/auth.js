@@ -1,6 +1,5 @@
-import conf from '../conf/conf '
-import { Client, Account, OAuthProvider } from "appwrite";
-
+import { Client, Account } from "appwrite";
+import conf from '../conf/conf'
 // ? Improvised code 
 // create a class
 export class AuthService {
@@ -63,7 +62,7 @@ export class AuthService {
 
     // 4. getCurrentUser
     // To check if current user is already logged in or not when on HOME page
-    async getCurrentUser({}) {
+    async getCurrentUser() {
         try {
             return await this.account.get();
         } catch (error) {
