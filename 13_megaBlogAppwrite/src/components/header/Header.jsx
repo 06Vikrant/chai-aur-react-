@@ -1,8 +1,76 @@
 import React from 'react'
+import { Container, Logo, LogoutBtn } from '../index';
+import { useNavigate, Link } from 'react-router-dom'
+import { useSelector } from 'react-redux';
+
 
 const Header = () => {
+  // getting access to the status from authSlice
+  const authStatus = useSelector((state) => state.auth.status);
+  const navigate = useNavigate();
+
+  // Whenever an navigation bar is made we loop through over an array[{}, {}]
+  const navItems = [
+    {
+      name: 'Home',
+      // slug: URL kha par ja rha h
+      slug: '/',
+      active: true
+    },
+    {
+      name: 'Login',
+      slug: '/login',
+      active: !authStatus
+    },
+    {
+      name: 'Signup',
+      slug: '/signup',
+      active: !authStatus
+    },
+    {
+      name: 'All Posts',
+      slug: '/all-posts',
+      active: authStatus
+    },
+    {
+      name: 'Add Posts',
+      slug: '/add-posts',
+      active: authStatus
+    },
+  ]
   return (
-    <div>Header</div>
+    // check if user is logged in or not
+    <header>
+      <Container>
+        <nav className='flex'>
+          <div className='mr-4'>
+            <Link to='/'>
+              <Logo width='70px'/>
+            </Link>
+          </div>
+          <ul className='flex ml-auto'>
+            {navItems.map((item) => 
+            item.active ? (
+                // Jo HTML element repeat ho rhi h wha hame key pass krni hoti h
+              <li key={item.name}>
+                <button
+                  className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full' 
+                  onClick={() => navigate(item.slug)}>
+                  {item.name}
+                </button>
+              </li>
+            ) : null 
+            )}
+            {/* If authStatus: true ? logout : not logout */}
+            {authStatus && (
+              <li>
+                <LogoutBtn />
+              </li>
+            )}
+          </ul>
+        </nav>
+      </Container>
+    </header>
   )
 }
 
