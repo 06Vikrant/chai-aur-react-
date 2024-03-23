@@ -12,6 +12,7 @@ const Input = React.forwardRef(({
             {label && 
                 <label
                 className='inline-block mb-1 pl-1'
+                // this for generating unique ID's for accessibility purposes
                 htmlFor={id}
                 >
                     {label}
@@ -23,6 +24,9 @@ const Input = React.forwardRef(({
                            text-black outline-none focus:bg-gray-50
                            duration-200 border border-gray-200 w-full ${className}`
                           }
+                //   pass ref from the user here
+                // this only gives ref to parent comp
+                // ref is passed and we take the state access
                 ref={ref}
                 {...props}
                 id={id}
