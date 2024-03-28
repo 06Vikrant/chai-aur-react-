@@ -1,15 +1,81 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
+import { createBrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
+import Login from './components/Login.jsx'
+import SignUp from './components/SignUp.jsx'
 import './index.css'
 
 import { store }  from './store/store'
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      {
+        path: '/',
+        element: <Home />
+      },
+      {
+        path: '/login',
+        // we are warpping every element in AuthLayout because
+        element: (
+          <AuthLayout authentication={false}>
+            <Login />
+          </AuthLayout>
+        )
+      },
+      {
+        path: '/signup',
+        // we are warpping every element in AuthLayout because
+        element: (
+          <AuthLayout authentication={false}>
+            <SignUp />
+          </AuthLayout>
+        )
+      },
+      {
+        path: '/all-posts',
+        element: (
+          <AuthLayout authentication>
+            {''}
+            <AllPosts />
+          </AuthLayout>
+        )
+      },
+      {
+        path: '/add-post',
+        element: (
+          <AuthLayout authentication>
+            {''}
+            <AddPost />
+          </AuthLayout>
+        )
+      },
+      {
+        path: '/edit-post/:slug',
+        element: (
+          <AuthLayout authentication>
+            {''}
+            <EditPost />
+          </AuthLayout>
+        )
+      },
+      {
+        path: '/post/:slug',
+        element: <Post />
+      },
+    ] 
+  }
+])
+
 ReactDOM.createRoot(document.getElementById('root')).render(
+
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <RouterProvider router={router}/>
     </Provider>
   </React.StrictMode>,
 )
