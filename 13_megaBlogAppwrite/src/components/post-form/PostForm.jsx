@@ -94,7 +94,7 @@ const PostForm = ({ post }) => {
             }
         })
 
-        // to stop looping through again after we use return 
+        // to stop looping through again and again we use callback function
       return () => {
         // memory management/optimisation
         return subscription.unsubscribe();
