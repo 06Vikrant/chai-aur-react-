@@ -9,6 +9,11 @@ import Container from './container/Container'
 import Logo from './Logo'
 import LogoutBtn from './header/LogoutBtn'
 import RTE from './RTE'
+import Login from './Login'
+import SignUp from './SignUp'
+import PostForm from './post-form/PostForm'
+import PostCard from './PostCard'
+import AuthLayout from './AuthLayout'
 
   {
     Container,
@@ -16,6 +21,11 @@ import RTE from './RTE'
     Footer,
     Logo,
     LogoutBtn,
-    RTE
+    RTE,
+    SignUp,
+    Login,
+    PostForm,
+    PostCard,
+    AuthLayout
 }
 
