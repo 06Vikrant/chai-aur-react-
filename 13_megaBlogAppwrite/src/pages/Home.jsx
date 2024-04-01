@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import databaseService from '../appwrite/config';
-import { Container, PostCard } from '../components/index'
+import { Container, PostCard } from '../components'
 
 
 const Home = () => {
@@ -14,7 +14,8 @@ const Home = () => {
 
     // check post whether exists and length of the posts too
     // 1. posts.length > 0
-    {posts.length === 0 ? (
+    return (
+        posts && posts.length === 0 ? (
         <div className='w-full py-8 mt-4 text-center'>
             <Container>
                 <div className='flex flex-wrap'>
@@ -30,8 +31,9 @@ const Home = () => {
         <div className='w-full py-8'>
             <Container>
                 <div className='flex flex-wrap'>
-                    {posts.map((post) => (
-                        <div key={posts.$id} className='p-2 w-1/4'>
+                    {/* adding a check to ensure that posts is not null or undefined before attempting to map over it */}
+                    {posts && posts.map((post) => (
+                        <div key={post.$id} className='p-2 w-1/4'>
                             {/* PROBLEM: only one post is sent */}
                             {/* <PostCard post={post} />  */}
                             {/* so to avoid it by giving posts one by one we spread them out */}
@@ -41,12 +43,8 @@ const Home = () => {
                 </div>
             </Container>
         </div>
-    )}
-  return (
-    <div>
-      
-    </div>
-  )
+    )
+    )
 }
 
 export default Home
