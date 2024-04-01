@@ -3,9 +3,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { login as authLogin } from '../store/authSlice'
-import { Button, Input, Logo } from './index'
-import { authService } from '../appwrite/auth'
-import { useDispatch } from 'react-redux'
+import { Button, Input, Logo } from '../components'
+import authService from '../appwrite/auth'
+
+
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -83,8 +84,10 @@ const Login = () => {
                     <Button 
                     type='submit'
                     className='w-full'
-                    placeholder='Sign In'
-                    />
+                    // placeholder='Sign In'
+                    >
+                        Sign in
+                    </Button>
                 </div>
             </form>
         </div>

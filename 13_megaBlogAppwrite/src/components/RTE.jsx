@@ -54,7 +54,7 @@ const RTE = ({ name, control, label, defaultValue = ''}) => {
                         }
                     }
                     // anything changes in the editor it's governed by onChange
-                    onEditorChange={`onChange`}
+                    onEditorChange={onChange}
                 />
             )}
         />

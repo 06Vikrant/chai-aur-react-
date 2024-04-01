@@ -9,14 +9,14 @@ const Button = ({
     ...props // rest properties the user can enter
 }) => {
   return (
-    <Button 
+    <button 
         className={`
         px-4 py-2 rounded-lg
          ${type} ${bgColor} ${textColor}
          ${className}
     `} {...props}>
       {children}
-    </Button>
+    </button>
   )
 }
 
