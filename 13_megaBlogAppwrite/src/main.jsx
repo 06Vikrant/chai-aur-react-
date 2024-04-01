@@ -1,10 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import App from './App.jsx'
-import Login from './components/Login.jsx'
-import SignUp from './components/SignUp.jsx'
+import { Protected as AuthLayout, Login } from './components/index.js'
+import { 
+  Home,
+  Signup,
+  Post,
+  AddPost,
+  EditPost,
+  AllPosts
+} from './pages/index'
 import './index.css'
 
 import { store }  from './store/store'
@@ -29,10 +36,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/signup',
-        // we are warpping every element in AuthLayout because
         element: (
           <AuthLayout authentication={false}>
-            <SignUp />
+            <Signup />
           </AuthLayout>
         )
       },
@@ -40,7 +46,7 @@ const router = createBrowserRouter([
         path: '/all-posts',
         element: (
           <AuthLayout authentication>
-            {''}
+            {' '}
             <AllPosts />
           </AuthLayout>
         )
@@ -49,7 +55,7 @@ const router = createBrowserRouter([
         path: '/add-post',
         element: (
           <AuthLayout authentication>
-            {''}
+            {' '}
             <AddPost />
           </AuthLayout>
         )
@@ -58,7 +64,7 @@ const router = createBrowserRouter([
         path: '/edit-post/:slug',
         element: (
           <AuthLayout authentication>
-            {''}
+            {' '}
             <EditPost />
           </AuthLayout>
         )
