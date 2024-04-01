@@ -1,10 +1,9 @@
 import { Client, Databases, ID, Query, Storage} from 'appwrite'
-import conf from '../conf/conf'
-
+import conf from '../conf/conf';
 class DatabaseService{
     client = new Client();
-    databases
-    bucket
+    databases;
+    bucket;
 
     constructor() {
         this.client
@@ -97,14 +96,21 @@ class DatabaseService{
 
     // status: keys => Queries
     // we need to create indexes then only we can use those queries
-    async getPosts(queries = Query.equal("status", "active")) {
+    async getPosts(queries = [Query.equal("status", "active")]) {
         try {
-            await this.databases.listDocuments(
+            console.log("Database ID:", conf.appwriteDatabaseID);
+            console.log("Collection ID:", conf.appwriteCollectionID);
+            console.log("Queries:", queries);
+
+            const response = await this.databases.listDocuments(
                 conf.appwriteDatabaseID,
                 conf.appwriteCollectionID,
                 queries,
                 // 100 //for pagination
             )
+
+            console.log('response:', response);
+            return response;
         } catch (error) {
             console.log('Appwrite databaseService :: multiplePosts :: ERROR!', error);
             return false;
@@ -129,11 +135,11 @@ class DatabaseService{
     }
 
     // 2. Delete File
-    async deleteFile(fileID) {
+    async deleteFile(fileId) {
         try {
             await this.bucket.deleteFile(
                 conf.appwriteBucketID,
-                fileID
+                fileId
             )
             return true;
         } catch (error) {
@@ -144,10 +150,10 @@ class DatabaseService{
 
     // 3. Get File Preview
     // this getFilePreview doesn't return any promise
-    getFilePriview(fileID) {
+    getFilePriview(fileId) {
             return this.bucket.getFilePriview(
                 conf.appwriteBucketID,
-                fileID
+                fileId
             )
     }
 }
