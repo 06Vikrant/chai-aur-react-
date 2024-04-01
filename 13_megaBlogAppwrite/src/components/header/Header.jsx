@@ -3,10 +3,6 @@ import React from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import { Container, Logo, LogoutBtn } from '../../components'
-// import Logo from '../Logo';
-// import LogoutBtn from './LogoutBtn';
-// import Container from '../container/Container';
-
 
 const Header = () => {
   // getting access to the status from authSlice

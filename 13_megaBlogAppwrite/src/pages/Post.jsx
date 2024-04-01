@@ -14,22 +14,20 @@ const Post = () => {
 
     // author exists => post and userData when post.userID === userData.$id
     // so if author exists => give edit/delete button
-    const isAuthor = post && userData ? post.userID === userData.$id : false;
+    const isAuthor = post && userData ? post.userId === userData.$id : false;
 
     useEffect(() => {
-        {slug ? (
+        slug ? 
             databaseService.getPost(slug).then((post) => {
-                {post ? setPost(post) : navigate('/')};
+                post ? setPost(post) : navigate('/');
             })
-        ) : (
-            navigate('/')
-        )} 
+         :  navigate('/')
     }, [slug, navigate])
 
     // so if author exists => give edit/delete button
     const deletePost = () => {
         databaseService.deletePost(post.$id).then((status) => {
-            {status ? databaseService.deleteFile(post.featuredImage) : navigate('/')}
+            status ? (databaseService.deleteFile(post.featuredImage), navigate('/')) : null;
         })
     }
   return post ? (

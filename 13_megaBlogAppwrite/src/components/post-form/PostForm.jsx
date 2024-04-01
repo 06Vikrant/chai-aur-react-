@@ -1,6 +1,10 @@
 import React, { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
-import { Button, Input, Select, RTE } from '../index'
+// import { Button, Input, Select, RTE } from '../index'
+import Button from '../Button'
+import Input from '../Input'
+import Select from '../Select'
+import RTE from '../RTE'
 import databaseService from '../../appwrite/config'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -11,14 +15,14 @@ const PostForm = ({ post }) => {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
             title: post?.title || '',
-            slug: post?.slug || '',
+            slug: post?.$id || '',
             content: post?.content || '',
             status: post?.status || '',
         }
     });
 
     const navigate = useNavigate()
-    const userData = useSelector(state => state.user.userData);
+    const userData = useSelector(state => state.auth.userData);
 
     // if the user has submitted the form
     // useCases: 
@@ -27,23 +31,24 @@ const PostForm = ({ post }) => {
         // case 1: if post value exists, then UPDATE
         if (post) {
             // upload the file
-            const file = data.image[0] ? databaseService.uploadFile(data.image[0]) : null
+            const file = data.image[0] ? await databaseService.uploadFile(data.image[0]) : null
 
             // delete the prev image/file
-            if (data) {
+            if (file) {
                 databaseService.deleteFile(post.featuredImage);
             }
 
             // update the post
             const dbPost = await databaseService.updatePost(
                 post.$id, {
+                    ...data,
                     featuredImage: file ? file.$id : undefined,
-                    // if dbPost successfully updated then navigate the user where he started editing
-                    if (dbPost) {
-                        navigate(`/post/${dbPost.$id}`);
-                    }
                 }
             )
+            // if dbPost successfully updated then navigate the user where he started editing
+            if (dbPost) {
+                navigate(`/post/${dbPost.$id}`);
+            }
         } else { // case 2: if post is not there, then
             // nothing to update, user want to create a new form
             // upload the file
@@ -51,14 +56,15 @@ const PostForm = ({ post }) => {
             const file = await databaseService.uploadFile(data.image[0]);
 
             if (file) {
-                // update the fileID
-                const fileID = file.$id;
-                data.featuredImage = fileID;
+                // update the fileId
+                const fileId = file.$id;
+                data.featuredImage = fileId;
                 // send the rest of the properties
-                const dbPost = databaseService.createPost({
+                const dbPost = await databaseService.createPost({
                     ...data, 
-                    userID: userData.$id,
+                    userId: userData.$id,
                 });
+
                 // redirecting the user to dbPost
                 if (dbPost) {
                     navigate(`/post/${dbPost.$id}`);
@@ -82,16 +88,15 @@ const PostForm = ({ post }) => {
                 .replace(/^[a-zA-Z\d\s]+/g, '-') //d: digits, s:spaces
                 .replace(/\s/g, '-')
 
-            return ''
+            return '';
     }, [])
 
     useEffect(() => {
         // subscription is made with watch method as well as other methods to0
-        const subscription = watch((value, {name}) => {
-            if (name === 'title') {
-                setValue('slug', slugTransform(value.title, 
-                    {shouldValidate: true}));
-            }
+        const subscription = watch((value, { name }) => {
+            name === 'title' ? 
+                setValue('slug', slugTransform(value.title, { shouldValidate: true}))
+                : null
         })
 
         // to stop looping through again and again we use callback function
@@ -99,7 +104,7 @@ const PostForm = ({ post }) => {
         // memory management/optimisation
         return subscription.unsubscribe();
       }
-    }, [])
+    }, [watch, slugTransform, setValue])
     
   return (
     <form onSubmit={handleSubmit(submit)} className='flex flex-wrap'>
@@ -118,9 +123,7 @@ const PostForm = ({ post }) => {
                 // it fills the value automatically
                 // jaise values fill hoti jaegi, we watch title and add values in subscription
                 onInput={(e) => {
-                    setValue('slug', slugTransform(e.currentTarget.value), {
-                        shouldValidate: true
-                    })
+                    setValue('slug', slugTransform(e.currentTarget.value), { shouldValidate: true })
                 }}
             />
             <RTE 
@@ -136,11 +139,11 @@ const PostForm = ({ post }) => {
                 type='file'
                 className='mb-4'
                 accept='image/png, image/jpeg, image/jpg, image/gif'
-                {...register('image', {required: !post})}
+                {...register('image', { required: !post })}
             />
             {post && (
                 <div className='w-full mb-4'>
-                    <Image 
+                    <img 
                         src={databaseService.getFilePriview(post.featuredImage)}
                         alt={post.title}
                         className='rounded-lg'
@@ -151,7 +154,7 @@ const PostForm = ({ post }) => {
                 label='Status'
                 options={['active', 'inactive']}
                 className='mb-4'
-                {...register('status', {required: true})}
+                {...register('status', { required: true })}
             />
             <Button
                 type='submit'
